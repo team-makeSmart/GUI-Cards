@@ -6,7 +6,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Assig5 {
+public class Phase1 {
 	
 	// 52 + 4 jokers + 1 back-of-card
 	static final int NUM_CARD_IMAGES = 57; 
