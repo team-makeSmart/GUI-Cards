@@ -1,6 +1,5 @@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
 
 public class Phase2
 {
@@ -13,7 +12,6 @@ public class Phase2
 
 	public static void main(String[] args)
 	{
-		int k;
 		Icon tempIcon;
 
 		// establish main frame in which program will run
@@ -21,29 +19,45 @@ public class Phase2
 		myCardTable.setSize(800, 600);
 		myCardTable.setLocationRelativeTo(null);
 		myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		GUICard.loadCardIcons();
-
+		
+		
 		Deck deck = new Deck();
-
 		deck.shuffle();
-
+		
+		//fill the arrays with cards
 		for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
 		{
-			myCardTable.pnlComputerHand.add(new JLabel(GUICard.getBackCardIcon()));
-			myCardTable.pnlHumanHand.add(new JLabel(GUICard.getIcon(deck.dealCard())));
+			computerLabels[i]=new JLabel(GUICard.getBackCardIcon());
+			humanLabels[i]= new JLabel(GUICard.getIcon((deck.dealCard())));
 		}
 
-		// CREATE LABELS ----------------------------------------------------
-		// code goes here ...
 
-		// ADD LABELS TO PANELS -----------------------------------------
-		// code goes here ...
-
-		// and two random cards in the play region (simulating a computer/hum
-		// ply)
-		// code goes here ...
-
+		//add the back cards for the computer and the cards for the hand 
+		for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
+		{
+			myCardTable.pnlComputerHand.add(computerLabels[i]);
+			myCardTable.pnlHumanHand.add(humanLabels[i]);
+		}
+		
+		
+		//create the two cards in the playing area
+		//NOTE: instead of JLabel[] playLabelText
+		//String array it is used because otherwise
+		//all the panels must be resized to fit two
+		//labels vertically in the playing area 
+		String playerNames[]={"Computer","You"};
+		 
+		for (int i = 0; i < NUM_PLAYERS; i++)
+		{
+			tempIcon = GUICard.getIcon((deck.dealCard())); 
+			playedCardLabels[i] =new JLabel(tempIcon);
+			playedCardLabels[i].setText(playerNames[i]);
+			playedCardLabels[i].setHorizontalTextPosition(JLabel.CENTER);
+			playedCardLabels[i].setVerticalTextPosition(JLabel.BOTTOM);
+			myCardTable.pnlPlayArea.add(playedCardLabels[i]);
+		}
+		
+		
 		// show everything to the user
 		myCardTable.setVisible(true);
 	}
@@ -72,19 +86,35 @@ class CardTable extends JFrame
 	 * @param numPlayers
 	 *            the num players
 	 */
-	CardTable(String title, int numCardsPerHand, int numPlayers) {
-		super(title);
+	public CardTable(String title, int numCardsPerHand, int numPlayers)
+	{
+		super(title);//set the title on the JFrame
+		
+		if (numCardsPerHand > MAX_CARDS_PER_HAND || numPlayers > MAX_PLAYERS)
+		{
+			return;
+		}
+		
+		this.numCardsPerHand = numCardsPerHand;
+		this.numPlayers = numPlayers;
+		
+		//first load the icons in the 2d array
+		GUICard.loadCardIcons();
+		
 		// create a default Font style
 		UIManager.getDefaults().put("TitledBorder.font", (new Font("Arial", Font.BOLD, 14)));
 
-		// three rows, zero columns layout, 10 pixels space
+		// three rows zero columns layout, 10 pixels space
 		setLayout(new GridLayout(3, 0, 10, 10));
 
 		// create the three panels with title borders
 		pnlComputerHand = new JPanel();
 		pnlComputerHand.setBorder(BorderFactory.createTitledBorder("Computer Hand"));
+		
 		pnlPlayArea = new JPanel();
 		pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Area"));
+		pnlPlayArea.setLayout(new GridLayout(0, numPlayers,10,10));//zero rows,numPlayers = columns 
+		
 		pnlHumanHand = new JPanel();
 		pnlHumanHand.setBorder(BorderFactory.createTitledBorder("Your Hand"));
 
@@ -100,7 +130,9 @@ class CardTable extends JFrame
  * Manages the reading and building of the card image Icons
  */
 class GUICard {
-	private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K +
+	public final static int NR_OF_VALUES = 14;
+	public final static int NR_OF_SUITS = 4;
+	private static Icon[][] iconCards = new ImageIcon[NR_OF_VALUES][NR_OF_SUITS]; // 14 = A thru K +
 																// joker
 	private static Icon iconBack;
 	static boolean iconsLoaded = false;
@@ -121,13 +153,13 @@ class GUICard {
 			{
 				for (int j = 0; j <  iconCards[i].length ; j++)																
 				{
-					iconCards[i][j] = new ImageIcon(inputFileName + Phase1.turnIntIntoCardValue(i)
-							+ Phase1.turnIntIntoCardSuit(j) + fileExtension);
+					iconCards[i][j] = new ImageIcon(inputFileName + turnIntIntoCardValue(i)
+							+ turnIntIntoCardSuit(j) + fileExtension);
 				}
 			}
 			//set the last card of the array as back card
-			iconCards[13][3]=new ImageIcon(inputFileName+"BK"+fileExtension);
-			iconBack = iconCards[13][3];
+			iconCards[NR_OF_VALUES-1][NR_OF_SUITS-1]=new ImageIcon(inputFileName+"BK"+fileExtension);
+			iconBack = iconCards[NR_OF_VALUES-1][NR_OF_SUITS-1];
 		}
 		
 		//testing
@@ -136,11 +168,35 @@ class GUICard {
 
 	}
 
-	static public Icon getIcon(Card card) {
+	static public Icon getIcon(Card card)
+	{
+		//should not return a back-card(which is the last card in the array)
 		return iconCards[Card.valueAsInt(card)][Card.suitAsInt(card)];
 	}
 
 	static public Icon getBackCardIcon() {
 		return iconBack;
+	}
+	/**
+	 * Turns 0 - 13 into "A", "2", "3", ... "Q", "K", "X"
+	 * @param j the corresponding card value in the array index
+	 * @return the card value
+	 */
+	static String turnIntIntoCardValue(int j)
+	{
+		String values[] = { "A", "2", "3", "4", "5", "6", "7", 
+				"8", "9", "T", "J", "Q", "K", "X" };
+		return values[j];
+	}
+
+	/**
+	 * Turns 0 - 3 into "C", "D", "H", "S"
+	 * @param i the corresponding suit value in the array index
+	 * @return
+	 */
+	static String turnIntIntoCardSuit(int i)
+	{
+		String suits[] = { "C", "D", "H", "S" };
+		return suits[i];
 	}
 }
