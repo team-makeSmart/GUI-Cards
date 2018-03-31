@@ -151,9 +151,54 @@ class Deck
       return topCard;
    }
    
-   void sort()
+   /**
+    * sorts the array by calling the arraySort() in Card class
+    */
+   public void sort()
    {
       Card.arraySort(cards, cards.length);
    }
+   
+/**
+ *  Puts the card on the top of the deck,
+ *  if there there are not too many instances 
+ *  of the card in the deck 
+ *  
+ * @param card the card to be added
+ * @return true if the card is added
+ */
+	public boolean addCard(Card card)
+	{
+		if (getNumCards() >= CARDS_PER_DECK * numPacks)
+			return false;
+		
+		cards[topCard++] = card;
+		return true;
+	}
+	
+	/**
+	 * Removes a specific card from the deck.
+	 * Puts the current top card into its place.
+	 * 
+	 * @param card the card to be removed
+	 * @return true if the card removed, otherwise false
+	 */
+	public boolean removeCard(Card card)
+	{
+		
+		for (int i = 0; i < cards.length; i++)
+		{
+			if (cards[i].equals(card))
+			{
+				for (int j = i + 1; i < cards.length - 1; j++)
+				{
+					cards[i] = cards[j];
+					i++;
+				}
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
