@@ -1,17 +1,26 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 public class Phase3
 {
+	static CardGameFramework highCardGame;
 	static int NUM_CARDS_PER_HAND = 7;
 	static int NUM_PLAYERS = 2;
 	static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
 	static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
 	static JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];
 	static JLabel[] playLabelText = new JLabel[NUM_PLAYERS];
+	static JLabel[] scoreTextLabel = new JLabel[NUM_PLAYERS];
+	static String[] playerNames = {"Computer","You"};
+	static Card[] cardPlayed = new Card[NUM_PLAYERS];
+	static int[] score = {0,0};
+	static Timer timer;
 
 	public static void main(String[] args)
 	{
@@ -23,7 +32,7 @@ public class Phase3
 		int numUnusedCardsPerPack = 0;
 		Card[] unusedCardsPerPack = null;
 
-		CardGameFramework highCardGame = new CardGameFramework( 
+		highCardGame = new CardGameFramework( 
 				numPacksPerDeck, numJokersPerPack, 
 				numUnusedCardsPerPack, unusedCardsPerPack, 
 				NUM_PLAYERS, NUM_CARDS_PER_HAND);
@@ -37,11 +46,16 @@ public class Phase3
 		myCardTable.setLocationRelativeTo(null);
 		myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		//fill the arrays with cards
+		
 		for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
 		{
+			//fill the arrays with cards
 			computerLabels[i]=new JLabel(GUICard.getBackCardIcon());
 			humanLabels[i]= new JLabel(GUICard.getIcon((highCardGame.getHand(1).inspectCard(i))));
+			
+			//add the back cards for the computer and the cards for the hand 
+			myCardTable.pnlComputerHand.add(computerLabels[i]);
+			myCardTable.pnlHumanHand.add(humanLabels[i]);
 			
 			// make the human cards clickable for gameplay
 			humanLabels[i].addMouseListener(new MouseAdapter()
@@ -54,37 +68,29 @@ public class Phase3
 			});
 		}
 
-
-		//add the back cards for the computer and the cards for the hand 
-		for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
-		{
-			myCardTable.pnlComputerHand.add(computerLabels[i]);
-			myCardTable.pnlHumanHand.add(humanLabels[i]);
-		}
 		
 		
-		//create the two cards in the playing area
-		//NOTE: instead of JLabel[] playLabelText
-		//String array it is used because otherwise
-		//all the panels must be resized to fit two
-		//labels vertically in the playing area 
-		String playerNames[]={"Computer","You"};
-		 
+		// Add cards and score to the GUI
 		for (int i = 0; i < NUM_PLAYERS; i++)
 		{
-			tempIcon = GUICard.getIcon((highCardGame.getCardFromDeck())); 
-			playedCardLabels[i] = new JLabel(tempIcon);
-			playedCardLabels[i].setText(playerNames[i]);
-			playedCardLabels[i].setHorizontalTextPosition(JLabel.CENTER);
-			playedCardLabels[i].setVerticalTextPosition(JLabel.BOTTOM);
+			String playedCardText = "<html><div style='text-align: center;'>" + playerNames[i] + "<br/>Score: " + score[i];
+
+			// add cards for each player
+			playedCardLabels[i] = new JLabel(playedCardText);
+			playedCardLabels[i].setBorder(new EmptyBorder(0,0,20,0));
+			playedCardLabels[i].setHorizontalAlignment(JLabel.CENTER);
+			playedCardLabels[i].setVerticalAlignment(JLabel.BOTTOM);
+	
 			myCardTable.pnlPlayArea.add(playedCardLabels[i]);
+			
 		}
-		
-		
 		// show everything to the user
 		myCardTable.setVisible(true);
+		
+		computerPlayCard();
 	}
 	
+
 	/**
 	 * Used for handling clicks on the human cards
 	 * @param e
@@ -94,14 +100,117 @@ public class Phase3
 		for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
 		{
 			if (e.getSource() == humanLabels[i]) {
-				System.out.println("Label " + i + " was clicked!");
+				// get the card
+				Card card = highCardGame.getHand(1).inspectCard(i);
+				
+				// play the card
+				cardPlayed[1] = card;
+				
+				// add the card to the playing area
+				playedCardLabels[1].setIcon(GUICard.getIcon(card));
+				playedCardLabels[1].setHorizontalTextPosition(JLabel.CENTER);
+				playedCardLabels[1].setVerticalTextPosition(JLabel.BOTTOM);
+				
+				// remove the card from the hand
+				humanLabels[i].setIcon(null);
+				
+				// if computer has not played a card
+				if (cardPlayed[0] == null) 
+				{
+					computerPlayCard();
+				} else // computer has played a cared
+				{
+					checkWinner();
+				}
 			}
+		}	
+	}
+	
+	
+	/**
+	 * Plays a card from the computers hand
+	 */
+	private static void computerPlayCard() 
+	{
+		Card card;
+		int cardIndex;
+		
+		// if the player has played a card
+		if (cardPlayed[1] == null) 
+		{
+			cardIndex = 0;
+		} else // if the player has not played a card
+		{
+			cardIndex = 0;
 		}
+		
+		// set the card
+		card = highCardGame.getHand(0).inspectCard(cardIndex);
+		
+		// play the card
+		cardPlayed[0] = card;
+		
+		// update GUI
+		playedCardLabels[0].setIcon(GUICard.getIcon(card));
+		playedCardLabels[0].setHorizontalTextPosition(JLabel.CENTER);
+		playedCardLabels[0].setVerticalTextPosition(JLabel.BOTTOM);
+		
+		// remove the card from the hand
+		computerLabels[cardIndex].setIcon(null);
+		
+		// if human has played their card
+		if (cardPlayed[1] != null)
+			checkWinner();
+	}
+	
+	/**
+	 * When both cards (computer and human) have been played,
+	 * checks for a winner, updates scores, and resets the playing area 
+	 */
+	private static void checkWinner() 
+	{
+		// make sure both cards have been played
+		if (cardPlayed[0] == null || cardPlayed[1] == null)
+			return;
+		
+		// if computer card is higher than players card
+		if (Card.getSortRanking(cardPlayed[0]) > Card.getSortRanking(cardPlayed[1]))
+		{
+			// increment computers score
+			score[0]++; 
+		} else 
+		{
+			// increment players card
+			score[1]++;
+		}
+		
+		
+		// Creates a delay of two seconds, so that the user can see the result of the current round before scoring
+		final int TWO_SECONDS = 2000;
+		timer = new Timer(TWO_SECONDS, new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				// reset both played cards
+				for (int i = 0; i < NUM_PLAYERS; i++)
+				{
+					String playedCardText = "<html><div style='text-align: center;'>" + playerNames[i] + "<br/>Score: " + score[i];
+					cardPlayed[i] = null;
+					playedCardLabels[i].setText(playedCardText);
+					playedCardLabels[i].setIcon(null);
+					playedCardLabels[i].setBorder(new EmptyBorder(0,0,20,0));
+					playedCardLabels[i].setHorizontalAlignment(JLabel.CENTER);
+					playedCardLabels[i].setVerticalAlignment(JLabel.BOTTOM);	
+				}		
+			}
+		});
+		timer.setRepeats(false);
+		timer.start();
 	}
 
-
-
 }
+
+	
 
 /**
  * Controls the positioning of the panels and cards of the GUI
