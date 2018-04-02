@@ -50,14 +50,35 @@ class Hand
 
    /**
     * Returns and removes the card in the top occupied position of the array
+    * @parm cardIndex the index of the card that will be played
     * @return the top card
     */
-   public Card playCard()
+   public Card playCard(int cardIndex)
    {
       Card errorCard = new Card('w', Card.Suit.SPADES);
-      if (numCards == 0)
+      if (numCards == 0 || cardIndex < 0 || cardIndex > MAX_CARDS)
          return errorCard;
-      return myCards[--numCards];
+      Card playCard = myCards[cardIndex];
+      removeCard(cardIndex);
+      return playCard;
+   }
+   
+   /**
+    * Helper method for playCard
+    * "Deletes" a carrom the myCards array
+    * Note: Since we can't actually change the size of the array, the
+    * element is not actually deleted. Instead, the cards in the hand
+    * above the cardIndex are shifted to the left once and numCards
+    * is decremented once, which effectively deletes the card for 
+    * all practical purposes of this application
+    * @param cardIndex the index of the card that will be removed
+    */
+   private void removeCard(int cardIndex) {
+	   for (int i = cardIndex; i < numCards-1; i++) 
+	   {
+		   myCards[i] = myCards[i+1];
+	   }
+	   numCards--;
    }
 
    /**
