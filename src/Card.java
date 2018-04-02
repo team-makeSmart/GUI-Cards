@@ -14,7 +14,7 @@ class Card
       CLUBS, DIAMONDS, HEARTS, SPADES
    }
 
-   /** Card value (e.g. 1,2,3,..., 9, T, J, K Q, A) */
+   /** Card value (e.g. X,2,3,..., 9, T, J, K Q, A) */
    private char value;
 
    /** Card suit */
