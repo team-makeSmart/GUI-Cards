@@ -61,6 +61,43 @@ public class Phase2
 		// show everything to the user
 		myCardTable.setVisible(true);
 	}
+	
+   /**
+    * Method for testing
+    * Generates and returns a card object with a random suit & values
+    * 
+    * @returns a newly generated random card object
+    */
+   public static Card generateRandomCard()
+   {
+      // Generate a random integer that will be a valid index value of the
+      // array Card.VALID_CARD_VALUES
+      int cardIndex = (int) (Math.random() * Card.VALID_CARD_VALUES.length);
+
+      // Get char value at index of array and store in char cardValue
+      char cardValue = Card.VALID_CARD_VALUES[cardIndex];
+
+      // Generate a random number that will be associated with suit of a card
+      int suitIndex = (int) (Math.random() * 4);
+
+      // Generate and return a Card object
+      if (suitIndex == 0)
+      {
+         return new Card(cardValue, Card.Suit.CLUBS);
+      } else if (suitIndex == 1)
+      {
+         return new Card(cardValue, Card.Suit.HEARTS);
+      } else if (suitIndex == 2)
+      {
+         return new Card(cardValue, Card.Suit.SPADES);
+      } else
+      {
+         return new Card(cardValue, Card.Suit.DIAMONDS);
+      }
+
+   }
+	
+	
 }
 
 /**
