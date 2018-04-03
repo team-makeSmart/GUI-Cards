@@ -58,7 +58,28 @@ class Hand
       Card errorCard = new Card('w', Card.Suit.SPADES);
       if (numCards == 0 || cardIndex < 0 || cardIndex > MAX_CARDS)
          return errorCard;
+      
+      // Save the card to play.
       Card playCard = myCards[cardIndex];
+      
+      // Remove card from hand.
+      myCards[cardIndex] = null;
+      
+      // Store a temporary hand.
+      Card[] tempHand = myCards;
+      myCards = new Card[--numCards];
+      int ndx = 0;
+      
+      // Add non-null cards from the temp hand to the persistent hand.
+      for(Card card : tempHand)
+      {
+         if(card != null)
+         {
+            myCards[ndx++] = card;
+         }
+         
+      }
+      
       return playCard;
    }
    
