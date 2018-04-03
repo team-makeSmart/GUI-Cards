@@ -19,6 +19,7 @@ public class Phase3 {
 	static Card[] cardPlayed = new Card[NUM_PLAYERS];
 	static int[] score = { 0, 0 };
 	static boolean cardsClickable = true;
+	static boolean computerPlaysFirst = true;
 
 	public static void main(String[] args) {
 
@@ -83,7 +84,9 @@ public class Phase3 {
 		// show everything to the user
 		myCardTable.setVisible(true);
 
-		computerPlayCard();
+		// have the computer play a card
+		if (computerPlaysFirst)
+			computerPlayCard();
 	}
 
 	/**
@@ -95,7 +98,7 @@ public class Phase3 {
 	{
 		
 		// check to make sure a card isn't already being played
-		if (cardsClickable == true)
+		if (cardsClickable)
 		{
 			// temporarily make the other cards unclickable
 			cardsClickable = false;
@@ -120,7 +123,7 @@ public class Phase3 {
 
 					// if computer has not played a card
 					if (cardPlayed[0] == null) {
-						// Creates a delay of one second
+						// creates a delay of one second
 						final int ONE_SECOND = 1000;
 						Timer timer = new Timer(ONE_SECOND, new ActionListener() 
 						{
@@ -299,6 +302,24 @@ public class Phase3 {
 				
 				// make the cards clickable again
 				cardsClickable = true;
+				
+				if (computerPlaysFirst)
+					computerPlaysFirst = false;
+				else {
+					computerPlaysFirst = true;
+					int QUARTER_SECOND = 250;
+					Timer computerPlayTimer = new Timer(QUARTER_SECOND, new ActionListener() 
+					{
+						public void actionPerformed(ActionEvent e) 
+						{
+							computerPlayCard();
+						}
+					});
+					
+					// start the timer
+					computerPlayTimer.setRepeats(false);
+					computerPlayTimer.start();
+				}
 			}
 		});
 		
