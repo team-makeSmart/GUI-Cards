@@ -4,7 +4,7 @@ class Card
 
    /** Constant array of valid card values acceptable for program */
    public static char[] valueRanks =
-   { 'X', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A' };
+   { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'X' };
 
    /**
     * Enumerated Suit values
