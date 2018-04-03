@@ -91,13 +91,20 @@ public class Phase3 {
 	 * 
 	 * @param e
 	 */
-	private static void onMouseClicked(MouseEvent e) {
-		if (!cardsClickable) {
+	private static void onMouseClicked(MouseEvent e) 
+	{
+		
+		// check to make sure a card isn't already being played
+		if (cardsClickable == false)
 			return;
-		}
 
-		for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
-			if (e.getSource() == humanLabels[i]) {
+		// temporarily make the other cards unclickable
+		cardsClickable = false;
+		
+		for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
+		{
+			if (e.getSource() == humanLabels[i]) 
+			{
 				// get the card
 				Card card = highCardGame.getHand(1).inspectCard(i);
 
@@ -116,12 +123,14 @@ public class Phase3 {
 				if (cardPlayed[0] == null) {
 					// Creates a delay of one second
 					final int ONE_SECOND = 1000;
-					Timer timer = new Timer(ONE_SECOND, new ActionListener() {
+					Timer timer = new Timer(ONE_SECOND, new ActionListener() 
+					{
 						public void actionPerformed(ActionEvent e) {
 							computerPlayCard();
 						}
 					});
-
+					
+					// start the timer
 					timer.setRepeats(false);
 					timer.start();
 					
@@ -129,6 +138,9 @@ public class Phase3 {
 				{
 					checkWinner();
 				}
+				
+				// make the cards clickable again
+				cardsClickable = true;
 			}
 		}
 	}
@@ -288,6 +300,8 @@ public class Phase3 {
 				}
 			}
 		});
+		
+		// start the timer
 		timer.setRepeats(false);
 		timer.start();
 	}
