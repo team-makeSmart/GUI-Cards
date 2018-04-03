@@ -20,7 +20,7 @@ public class Phase3
 	static String[] playerNames = {"Computer","You"};
 	static Card[] cardPlayed = new Card[NUM_PLAYERS];
 	static int[] score = {0,0};
-	static Timer timer;
+	static boolean cardsClickable = true;
 
 	public static void main(String[] args)
 	{
@@ -63,7 +63,11 @@ public class Phase3
 				@Override
 				public void mouseClicked(MouseEvent e)
 				{
-					onMouseClicked(e);
+					if (cardsClickable == true)
+					{
+						cardsClickable = false; //temporarily make the cards unclickable
+						onMouseClicked(e);
+					}
 				}
 			});
 		}
@@ -93,10 +97,14 @@ public class Phase3
 
 	/**
 	 * Used for handling clicks on the human cards
-	 * @param e
+	 * @param e the card JLabel that is clicked
 	 */
 	private static void onMouseClicked(MouseEvent e) 
 	{
+		// temporarily make the cards unclickable
+		cardsClickable = false;
+		
+		// find which card was clicked
 		for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
 		{
 			if (e.getSource() == humanLabels[i]) {
@@ -117,7 +125,18 @@ public class Phase3
 				// if computer has not played a card
 				if (cardPlayed[0] == null) 
 				{
-					computerPlayCard();
+					// Creates a delay of one second
+					final int ONE_SECOND = 1000;
+					Timer timer = new Timer(1, new ActionListener() 
+					{
+						public void actionPerformed(ActionEvent e)
+						{
+							computerPlayCard();	
+						}
+					});
+					timer.setRepeats(false);
+					timer.start();
+					
 				} else // computer has played a cared
 				{
 					checkWinner();
@@ -187,7 +206,7 @@ public class Phase3
 		
 		// Creates a delay of two seconds, so that the user can see the result of the current round before scoring
 		final int TWO_SECONDS = 2000;
-		timer = new Timer(TWO_SECONDS, new ActionListener() 
+		Timer timer = new Timer(TWO_SECONDS, new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e)
 			{
@@ -200,7 +219,10 @@ public class Phase3
 					playedCardLabels[i].setIcon(null);
 					playedCardLabels[i].setBorder(new EmptyBorder(0,0,20,0));
 					playedCardLabels[i].setHorizontalAlignment(JLabel.CENTER);
-					playedCardLabels[i].setVerticalAlignment(JLabel.BOTTOM);	
+					playedCardLabels[i].setVerticalAlignment(JLabel.BOTTOM);
+					
+					// make the cards clickable again
+					cardsClickable = true;
 				}		
 			}
 		});

@@ -59,27 +59,9 @@ class Hand
       if (numCards == 0 || cardIndex < 0 || cardIndex > MAX_CARDS)
          return errorCard;
       Card playCard = myCards[cardIndex];
-      removeCard(cardIndex);
       return playCard;
    }
    
-   /**
-    * Helper method for playCard
-    * "Deletes" a carrom the myCards array
-    * Note: Since we can't actually change the size of the array, the
-    * element is not actually deleted. Instead, the cards in the hand
-    * above the cardIndex are shifted to the left once and numCards
-    * is decremented once, which effectively deletes the card for 
-    * all practical purposes of this application
-    * @param cardIndex the index of the card that will be removed
-    */
-   private void removeCard(int cardIndex) {
-	   for (int i = cardIndex; i < numCards-1; i++) 
-	   {
-		   myCards[i] = myCards[i+1];
-	   }
-	   numCards--;
-   }
 
    /**
     * Prints value and suit for all the cards in the hand
