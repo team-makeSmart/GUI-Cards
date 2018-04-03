@@ -95,52 +95,50 @@ public class Phase3 {
 	{
 		
 		// check to make sure a card isn't already being played
-		if (cardsClickable == false)
-			return;
-
-		// temporarily make the other cards unclickable
-		cardsClickable = false;
-		
-		for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
+		if (cardsClickable == true)
 		{
-			if (e.getSource() == humanLabels[i]) 
+			// temporarily make the other cards unclickable
+			cardsClickable = false;
+			
+			for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
 			{
-				// get the card
-				Card card = highCardGame.getHand(1).inspectCard(i);
-
-				// play the card
-				cardPlayed[1] = card;
-
-				// add the card to the playing area
-				playedCardLabels[1].setIcon(GUICard.getIcon(card));
-				playedCardLabels[1].setHorizontalTextPosition(JLabel.CENTER);
-				playedCardLabels[1].setVerticalTextPosition(JLabel.BOTTOM);
-
-				// remove the card from the hand
-				humanLabels[i].setIcon(null);
-
-				// if computer has not played a card
-				if (cardPlayed[0] == null) {
-					// Creates a delay of one second
-					final int ONE_SECOND = 1000;
-					Timer timer = new Timer(ONE_SECOND, new ActionListener() 
-					{
-						public void actionPerformed(ActionEvent e) {
-							computerPlayCard();
-						}
-					});
-					
-					// start the timer
-					timer.setRepeats(false);
-					timer.start();
-					
-				} else // computer has played a cared
+				if (e.getSource() == humanLabels[i]) 
 				{
-					checkWinner();
+					// get the card
+					Card card = highCardGame.playCard(1, i);
+
+					// play the card
+					cardPlayed[1] = card;
+
+					// add the card to the playing area
+					playedCardLabels[1].setIcon(GUICard.getIcon(card));
+					playedCardLabels[1].setHorizontalTextPosition(JLabel.CENTER);
+					playedCardLabels[1].setVerticalTextPosition(JLabel.BOTTOM);
+
+					// remove the card from the hand
+					humanLabels[i].setIcon(null);
+
+					// if computer has not played a card
+					if (cardPlayed[0] == null) {
+						// Creates a delay of one second
+						final int ONE_SECOND = 1000;
+						Timer timer = new Timer(ONE_SECOND, new ActionListener() 
+						{
+							public void actionPerformed(ActionEvent e) {
+								computerPlayCard();
+							}
+						});
+						
+						// start the timer
+						timer.setRepeats(false);
+						timer.start();
+						
+					} else // computer has played a cared
+					{
+						checkWinner();
+					}
+					
 				}
-				
-				// make the cards clickable again
-				cardsClickable = true;
 			}
 		}
 	}
@@ -298,6 +296,9 @@ public class Phase3 {
 					playedCardLabels[i].setHorizontalAlignment(JLabel.CENTER);
 					playedCardLabels[i].setVerticalAlignment(JLabel.BOTTOM);
 				}
+				
+				// make the cards clickable again
+				cardsClickable = true;
 			}
 		});
 		
