@@ -309,7 +309,7 @@ public class Phase3 {
 				else {
 					computerPlaysFirst = true;
 					
-					// create a small delay between the round ending the computer playing
+					// create a small delay between the round ending and the computer playing
 					int QUARTER_SECOND = 250;
 					Timer computerPlayTimer = new Timer(QUARTER_SECOND, new ActionListener() 
 					{
