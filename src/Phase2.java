@@ -194,9 +194,9 @@ class GUICard {
 							+ turnIntIntoCardSuit(j) + fileExtension);
 				}
 			}
-			//set the last card of the array as back card
-			iconCards[NR_OF_VALUES-1][NR_OF_SUITS-1]=new ImageIcon(inputFileName+"BK"+fileExtension);
-			iconBack = iconCards[NR_OF_VALUES-1][NR_OF_SUITS-1];
+			
+			//set the card back icon.
+			iconBack = new ImageIcon(inputFileName+"BK"+fileExtension);
 		}
 		
 		//testing
@@ -207,8 +207,7 @@ class GUICard {
 
 	static public Icon getIcon(Card card)
 	{
-		//should not return a back-card(which is the last card in the array)
-		return iconCards[Card.valueAsInt(card)][Card.suitAsInt(card)];
+	   return iconCards[Card.valueAsInt(card)][Card.suitAsInt(card)];
 	}
 
 	static public Icon getBackCardIcon() {
