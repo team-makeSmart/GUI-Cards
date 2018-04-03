@@ -72,10 +72,10 @@ public class Phase2
    {
       // Generate a random integer that will be a valid index value of the
       // array Card.VALID_CARD_VALUES
-      int cardIndex = (int) (Math.random() * Card.VALID_CARD_VALUES.length);
+      int cardIndex = (int) (Math.random() * Card.valueRanks.length);
 
       // Get char value at index of array and store in char cardValue
-      char cardValue = Card.VALID_CARD_VALUES[cardIndex];
+      char cardValue = Card.valueRanks[cardIndex];
 
       // Generate a random number that will be associated with suit of a card
       int suitIndex = (int) (Math.random() * 4);
