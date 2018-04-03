@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/Phase2.java</name>
-			<type>1</type>
-			<location>C:/Users/Hunter/Documents/GitHub/GUI-Cards/src/Phase2.java</location>
-		</link>
-	</linkedResources>
 </projectDescription>
