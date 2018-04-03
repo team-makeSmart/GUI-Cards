@@ -303,10 +303,13 @@ public class Phase3 {
 				// make the cards clickable again
 				cardsClickable = true;
 				
+				// alternate between the computer playing first and the human playing first
 				if (computerPlaysFirst)
 					computerPlaysFirst = false;
 				else {
 					computerPlaysFirst = true;
+					
+					// create a small between the round ending the computer playing
 					int QUARTER_SECOND = 250;
 					Timer computerPlayTimer = new Timer(QUARTER_SECOND, new ActionListener() 
 					{
