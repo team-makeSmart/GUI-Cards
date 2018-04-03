@@ -200,9 +200,6 @@ class Card
     */
    static void arraySort(Card[] cards, int arraySize)
    {
-      // Start timer.
-      long startTime = System.nanoTime();
-
       // Don't sort if there are no cards.
       if (arraySize <= 0)
       {
@@ -210,10 +207,6 @@ class Card
       }
 
       quickSort(cards, 0, arraySize - 1);
-      
-      // End timer, display sort time.
-      System.out.println("Sort complete. Took " + ((System.nanoTime() - startTime) / 100000) + " ms.");
-
    }
 
    /**

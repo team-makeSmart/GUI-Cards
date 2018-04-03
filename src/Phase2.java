@@ -194,7 +194,7 @@ class GUICard {
 							+ turnIntIntoCardSuit(j) + fileExtension);
 				}
 			}
-			
+      
 			//set the card back icon.
 			iconBack = new ImageIcon(inputFileName+"BK"+fileExtension);
 		}
