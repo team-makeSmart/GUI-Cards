@@ -195,7 +195,7 @@ class GUICard {
 				}
 			}
 			
-			//set the last card of the array as back card
+			//set the card back icon.
 			iconBack = new ImageIcon(inputFileName+"BK"+fileExtension);
 		}
 		
