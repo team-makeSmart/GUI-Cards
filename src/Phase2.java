@@ -194,9 +194,8 @@ class GUICard {
 							+ turnIntIntoCardSuit(j) + fileExtension);
 				}
 			}
-			//set the last card of the array as back card
-			iconCards[NR_OF_VALUES-1][NR_OF_SUITS-1]=new ImageIcon(inputFileName+"BK"+fileExtension);
-			iconBack = iconCards[NR_OF_VALUES-1][NR_OF_SUITS-1];
+			//set the back card icon.
+			iconBack = new ImageIcon(inputFileName+"BK"+fileExtension);
 		}
 		
 		//testing

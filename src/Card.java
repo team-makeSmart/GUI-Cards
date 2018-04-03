@@ -4,7 +4,7 @@ class Card
 
    /** Constant array of valid card values acceptable for program */
    public static char[] valueRanks =
-   { 'X', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A' };
+   { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'X' };
 
    /**
     * Enumerated Suit values
@@ -200,9 +200,6 @@ class Card
     */
    static void arraySort(Card[] cards, int arraySize)
    {
-      // Start timer.
-      long startTime = System.nanoTime();
-
       // Don't sort if there are no cards.
       if (arraySize <= 0)
       {
@@ -210,10 +207,6 @@ class Card
       }
 
       quickSort(cards, 0, arraySize - 1);
-      
-      // End timer, display sort time.
-      System.out.println("Sort complete. Took " + ((System.nanoTime() - startTime) / 100000) + " ms.");
-
    }
 
    /**
