@@ -194,7 +194,8 @@ class GUICard {
 							+ turnIntIntoCardSuit(j) + fileExtension);
 				}
 			}
-			//set the back card icon.
+      
+			//set the card back icon.
 			iconBack = new ImageIcon(inputFileName+"BK"+fileExtension);
 		}
 		
@@ -206,8 +207,7 @@ class GUICard {
 
 	static public Icon getIcon(Card card)
 	{
-		//should not return a back-card(which is the last card in the array)
-		return iconCards[Card.valueAsInt(card)][Card.suitAsInt(card)];
+	   return iconCards[Card.valueAsInt(card)][Card.suitAsInt(card)];
 	}
 
 	static public Icon getBackCardIcon() {
