@@ -10,14 +10,14 @@ public class Phase1
 {
 
    // 52 + 4 jokers + 1 back-of-card
-   static final int NUM_CARD_IMAGES = 57;
+   private static final int NUM_CARD_IMAGES = 57;
    // Holds 57 icons and their corresponding labels
-   static Icon[] icon = new ImageIcon[NUM_CARD_IMAGES];
+   private static Icon[] icon = new ImageIcon[NUM_CARD_IMAGES];
 
    /**
     * Instantiates each of the 57 Icons in the icon[] array.
     */
-   static void loadCardIcons()
+   private static void loadCardIcons()
    {
       String inputFileName = "src/images/";
       String fileExtension = ".gif";
@@ -48,7 +48,7 @@ public class Phase1
     *           the corresponding card value in the array index
     * @return the card value
     */
-   static String turnIntIntoCardValue(int j)
+   private static String turnIntIntoCardValue(int j)
    {
       String values[] =
       { "A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "X" };
@@ -62,7 +62,7 @@ public class Phase1
     *           the corresponding suit value in the array index
     * @return
     */
-   static String turnIntIntoCardSuit(int i)
+   private static String turnIntIntoCardSuit(int i)
    {
       String suits[] = { "C", "D", "H", "S" }; 
       return suits[i];
