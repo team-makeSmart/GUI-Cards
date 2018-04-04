@@ -1,3 +1,11 @@
+/**
+ * @author Hunter Mason, Jake McGhee, Mac Doussias, Pavlos Papadonikolakis
+ * CLASS CST 338
+ * Team MakeSmart
+ * Assignment 5, Module 5
+ * PHASE 3
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
