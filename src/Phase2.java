@@ -3,12 +3,11 @@ import javax.swing.*;
 
 public class Phase2
 {
-   static int NUM_CARDS_PER_HAND = 7;
-   static int NUM_PLAYERS = 2;
-   static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
-   static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
-   static JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];
-   static JLabel[] playLabelText = new JLabel[NUM_PLAYERS];
+   private static int NUM_CARDS_PER_HAND = 7;
+   private static int NUM_PLAYERS = 2;
+   private static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
+   private static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
+   private static JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];
 
    public static void main(String[] args)
    {
@@ -105,8 +104,8 @@ public class Phase2
  */
 class CardTable extends JFrame
 {
-   static int MAX_CARDS_PER_HAND = 56;
-   static int MAX_PLAYERS = 2; // for now, we only allow 2 person games
+   public static int MAX_CARDS_PER_HAND = 56;
+   public static int MAX_PLAYERS = 2; // for now, we only allow 2 person games
 
    private int numCardsPerHand;
    private int numPlayers;
@@ -181,7 +180,7 @@ class GUICard
    private static Icon iconBack;
    static boolean iconsLoaded = false;
 
-   static void loadCardIcons()
+   public static void loadCardIcons()
    {
       if (iconCards[0][0] != null)
       {
@@ -243,7 +242,7 @@ class GUICard
     *           the corresponding card value in the array index
     * @return the card value
     */
-   static String turnIntIntoCardValue(int j)
+   public static String turnIntIntoCardValue(int j)
    {
       String values[] =
       { "A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "X" };
@@ -257,7 +256,7 @@ class GUICard
     *           the corresponding suit value in the array index
     * @return
     */
-   static String turnIntIntoCardSuit(int i)
+   public static String turnIntIntoCardSuit(int i)
    {
       String suits[] =
       { "C", "D", "H", "S" };
