@@ -1,5 +1,9 @@
 /**
- * 
+ * @author Hunter Mason, Jake McGhee, Mac Doussias, Pavlos Papadonikolakis
+ * CLASS CST 338
+ * Team MakeSmart
+ * Assignment 5, Module 5
+ * PHASE 1
  * Reads the .gif image files as Icons, and attach them to JLabels that 
  *  can be displayed on a JFrame.
  */
