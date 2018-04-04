@@ -1,3 +1,11 @@
+/**
+ * @author Hunter Mason, Jake McGhee, Mac Doussias, Pavlos Papadonikolakis
+ * CLASS CST 338
+ * Team MakeSmart
+ * Assignment 5, Module 5
+ * PHASE 2
+ */
+
 import java.awt.*;
 import javax.swing.*;
 
