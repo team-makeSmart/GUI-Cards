@@ -29,6 +29,7 @@ class Hand
 
    /**
     * Adds a card to the next available position in the myCards array
+    * 
     * @param card
     *           the card
     * @return true, if successful
@@ -50,6 +51,7 @@ class Hand
 
    /**
     * Returns and removes the card in the top occupied position of the array
+    * 
     * @parm cardIndex the index of the card that will be played
     * @return the top card
     */
@@ -58,31 +60,29 @@ class Hand
       Card errorCard = new Card('w', Card.Suit.SPADES);
       if (numCards == 0 || cardIndex < 0 || cardIndex > MAX_CARDS)
          return errorCard;
-      
+
       // Save the card to play.
       Card playCard = myCards[cardIndex];
-      
+
       // Remove card from hand.
       myCards[cardIndex] = null;
-      
+
       // Store a temporary hand.
       Card[] tempHand = myCards;
       myCards = new Card[--numCards];
       int ndx = 0;
-      
+
       // Add non-null cards from the temp hand to the persistent hand.
-      for(Card card : tempHand)
+      for (Card card : tempHand)
       {
-         if(card != null)
+         if (card != null)
          {
             myCards[ndx++] = card;
          }
-         
       }
-      
+
       return playCard;
    }
-   
 
    /**
     * Prints value and suit for all the cards in the hand
@@ -93,7 +93,8 @@ class Hand
       if (numCards == 0) // There are no cards in the hand
       {
          return "\nHand = (  )";
-      } else // There are cards in the hand
+      } 
+      else // There are cards in the hand
       {
          String returnVal = "\nHand = ( ";
 
@@ -117,6 +118,7 @@ class Hand
 
    /**
     * Gets the number of cards.
+    * 
     * @return the number of cards
     */
    public int getNumOfCards()
@@ -125,12 +127,12 @@ class Hand
    }
 
    /**
-    * Accessor for an individual card. Returns a card with 
-    * errorFlag = true if k is bad
-    * @param k 
-    *    the index of the card in the array
-    * @return 
-    *    the card
+    * Accessor for an individual card. Returns a card with errorFlag = true if k
+    * is bad
+    * 
+    * @param k
+    *           the index of the card in the array
+    * @return the card
     */
    Card inspectCard(int k)
    {
@@ -139,7 +141,10 @@ class Hand
          return errorCard;
       return myCards[k];
    }
-   
+
+   /**
+    * Sorts array of cards
+    * */
    void sort()
    {
       Card.arraySort(myCards, numCards);
