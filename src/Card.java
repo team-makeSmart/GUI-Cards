@@ -21,8 +21,8 @@ class Card
    private Suit suit;
 
    /**
-    * Error flag, keeps track of invalid entries. If true, the card object does not
-    * have valid data
+    * Error flag, keeps track of invalid entries. If true, the card object does
+    * not have valid data
     */
    private boolean errorFlag;
 
@@ -56,7 +56,8 @@ class Card
       if (errorFlag == true) // Card does not contain valid data
       {
          return "** illegal **"; // Returns an error message
-      } else
+      } 
+      else
       {
          // Get char value, convert to string, and store in variable
          String returnValue = String.valueOf(getValue());
@@ -161,12 +162,13 @@ class Card
          return true;
       }
 
-      if (obj == null || getClass() != obj.getClass() || this.value != other.value || this.errorFlag != other.errorFlag
-            || this.suit != other.suit)
+      if (obj == null || getClass() != obj.getClass()
+         || this.value != other.value || this.errorFlag != other.errorFlag
+         || this.suit != other.suit)
       {
          return false;
       }
-
+      
       return true;
    }
 
@@ -193,10 +195,11 @@ class Card
 
    /**
     * Sorts an array of Cards using QuickSort.
+    * 
     * @param cards
-    *             An array of Cards.
+    *           An array of Cards.
     * @param arraySize
-    *                  The number of Cards to sort from the first index.
+    *           The number of Cards to sort from the first index.
     */
    static void arraySort(Card[] cards, int arraySize)
    {
@@ -211,12 +214,13 @@ class Card
 
    /**
     * Sorts an array of Cards from index lowerNdx to index upperNdx.
+    * 
     * @param cardArray
-    *                   The array of Cards to be sorted.
+    *           The array of Cards to be sorted.
     * @param lowerNdx
-    *                   The starting index to sort from.
+    *           The starting index to sort from.
     * @param upperNdx
-    *                   The ending index to sort to.
+    *           The ending index to sort to.
     */
    private static void quickSort(Card[] cardArray, int lowerNdx, int upperNdx)
    {
@@ -228,7 +232,7 @@ class Card
 
       // Find the mid-point between the two indices lowerNdx and upperNdx.
       int pivotNdx = lowerNdx + ((upperNdx - lowerNdx) / 2);
-      
+
       // Get the sort ranking of the Card at the index pivotNdx.
       int pivotValue = getSortRanking(cardArray[pivotNdx]);
 
@@ -242,15 +246,17 @@ class Card
          // Get the sort ranking of the cards at indices i and j.
          int lowerValue = getSortRanking(cardArray[i]);
          int upperValue = getSortRanking(cardArray[j]);
-         
-         // Find a card with sort ranking higher than the pivotValue in the lower section of the cardArray.
+
+         // Find a card with sort ranking higher than the pivotValue in the
+         // lower section of the cardArray.
          // This loop ends when an unsorted card is found.
          while (lowerValue < pivotValue)
          {
             lowerValue = getSortRanking(cardArray[++i]);
          }
-           
-         // Find a card with sort ranking lower than the pivotValue in the upper section of the cardArray.
+
+         // Find a card with sort ranking lower than the pivotValue in the
+         // upper section of the cardArray.
          // This loop ends when an unsorted card is found.
          while (upperValue > pivotValue)
          {
@@ -267,7 +273,8 @@ class Card
             j--;
          }
 
-         // Use recursion to repeat the sorting process until all cards are sorted in ascending order.
+         // Use recursion to repeat the sorting process until all cards are
+         // sorted in ascending order.
          if (lowerNdx < j)
          {
             quickSort(cardArray, lowerNdx, j);
@@ -282,8 +289,9 @@ class Card
 
    /**
     * Calculates a card's sort ranking based on value and suit.
+    * 
     * @param card
-    *             The Card to evaluate.
+    *           The Card to evaluate.
     * @return
     */
    static int getSortRanking(Card card)
