@@ -1,7 +1,16 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -20,6 +29,8 @@ public class Phase3 {
 	static int[] score = { 0, 0 };
 	static boolean cardsClickable = true;
 	static boolean computerPlaysFirst = true;
+	static int gameIndex = 0;
+	static JPanel bottomPanel;
 
 	public static void main(String[] args) {
 
@@ -32,14 +43,18 @@ public class Phase3 {
 		highCardGame = new CardGameFramework(numPacksPerDeck, numJokersPerPack, numUnusedCardsPerPack,
 				unusedCardsPerPack, NUM_PLAYERS, NUM_CARDS_PER_HAND);
 
-		// deal the cards
-		highCardGame.deal();
-
 		// establish main GUI frame in which the program will run
 		CardTable myCardTable = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
-		myCardTable.setSize(800, 600);
+
+		myCardTable = new CardTable("High game ", NUM_CARDS_PER_HAND, NUM_PLAYERS);
+		myCardTable.setSize(800, 850);
+		myCardTable.setLayout(new GridLayout(4, 0, 0, 0));
+		myCardTable.add(bottomPanel());
 		myCardTable.setLocationRelativeTo(null);
 		myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		// deal the cards
+		highCardGame.deal();
 
 		System.out.println("AI Hand: ");
 		System.out.println(highCardGame.getHand(0).toString());
@@ -77,6 +92,7 @@ public class Phase3 {
 			playedCardLabels[i].setBorder(new EmptyBorder(0, 0, 20, 0));
 			playedCardLabels[i].setHorizontalAlignment(JLabel.CENTER);
 			playedCardLabels[i].setVerticalAlignment(JLabel.BOTTOM);
+			playedCardLabels[i].setIconTextGap(-1);
 
 			myCardTable.pnlPlayArea.add(playedCardLabels[i]);
 
@@ -94,19 +110,15 @@ public class Phase3 {
 	 * 
 	 * @param e
 	 */
-	private static void onMouseClicked(MouseEvent e) 
-	{
-		
+	private static void onMouseClicked(MouseEvent e) {
+
 		// check to make sure a card isn't already being played
-		if (cardsClickable)
-		{
+		if (cardsClickable) {
 			// temporarily make the other cards unclickable
 			cardsClickable = false;
-			
-			for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
-			{
-				if (e.getSource() == humanLabels[i]) 
-				{
+
+			for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
+				if (e.getSource() == humanLabels[i]) {
 					// get the card
 					Card card = highCardGame.playCard(1, i);
 
@@ -125,22 +137,21 @@ public class Phase3 {
 					if (cardPlayed[0] == null) {
 						// creates a delay of one second
 						final int ONE_SECOND = 1000;
-						Timer timer = new Timer(ONE_SECOND, new ActionListener() 
-						{
+						Timer timer = new Timer(ONE_SECOND, new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								computerPlayCard();
 							}
 						});
-						
+
 						// start the timer
 						timer.setRepeats(false);
 						timer.start();
-						
+
 					} else // computer has played a cared
 					{
 						checkWinner();
 					}
-					
+
 				}
 			}
 		}
@@ -266,13 +277,14 @@ public class Phase3 {
 	}
 
 	/**
-	 * When both cards (computer and human) have been played, checks for a winner,
-	 * updates scores, and resets the playing area
+	 * When both cards (computer and human) have been played, checks for a
+	 * winner, updates scores, and resets the playing area
 	 */
 	private static void checkWinner() {
 		// make sure both cards have been played
 		if (cardPlayed[0] == null || cardPlayed[1] == null)
 			return;
+		gameIndex++;
 
 		// if computer card is higher than players card
 		if (Card.getSortRanking(cardPlayed[0]) > Card.getSortRanking(cardPlayed[1])) {
@@ -283,7 +295,8 @@ public class Phase3 {
 			score[1]++;
 		}
 
-		// Creates a delay of two seconds, so that the user can see the result of the
+		// Creates a delay of two seconds, so that the user can see the result
+		// of the
 		// current round before scoring
 		final int TWO_SECONDS = 2000;
 		Timer timer = new Timer(TWO_SECONDS, new ActionListener() {
@@ -299,36 +312,72 @@ public class Phase3 {
 					playedCardLabels[i].setHorizontalAlignment(JLabel.CENTER);
 					playedCardLabels[i].setVerticalAlignment(JLabel.BOTTOM);
 				}
-				
+
 				// make the cards clickable again
 				cardsClickable = true;
-				
-				// alternate between the computer playing first and the human playing first
+
+				// alternate between the computer playing first and the human
+				// playing first
 				if (computerPlaysFirst)
 					computerPlaysFirst = false;
 				else {
 					computerPlaysFirst = true;
-					
-					// create a small delay between the round ending and the computer playing
+
+					// create a small delay between the round ending and the
+					// computer playing
 					int QUARTER_SECOND = 250;
-					Timer computerPlayTimer = new Timer(QUARTER_SECOND, new ActionListener() 
-					{
-						public void actionPerformed(ActionEvent e) 
-						{
+					Timer computerPlayTimer = new Timer(QUARTER_SECOND, new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
 							computerPlayCard();
 						}
 					});
-					
+
 					// start the timer
 					computerPlayTimer.setRepeats(false);
 					computerPlayTimer.start();
 				}
 			}
 		});
-		
+
 		// start the timer
 		timer.setRepeats(false);
 		timer.start();
+		displayWinner();
+		
+	}
+	/**
+	 * Displays the winner by adding a new panel to 
+	 * the bottom panel 
+	 */
+	private static void displayWinner(){
+		int computerScore = score[0];
+		int userScore = score[1];
+		String winner = "COMPUTER";
+
+		if (computerScore < userScore) {
+			winner = "USER";
+		}
+		
+		if (gameIndex == NUM_CARDS_PER_HAND){
+			bottomPanel.add(new DisplayWinner(winner),
+					BorderLayout.CENTER);
+		}
+		
+	}
+
+	private static JComponent bottomPanel() {
+		bottomPanel = new JPanel();
+		bottomPanel.setLayout(new BorderLayout());
+
+		JPanel subBottom = new JPanel();
+		JPanel subUpper = new JPanel();
+		subUpper.setBackground(Color.BLUE);
+		bottomPanel.setBackground(Color.black);
+		subBottom.setBackground(Color.BLUE);
+		bottomPanel.add(subUpper, BorderLayout.SOUTH);
+
+		bottomPanel.add(subBottom, BorderLayout.NORTH);
+		return bottomPanel;
 	}
 }
 
@@ -485,4 +534,47 @@ class CardGameFramework {
 		return hand[playerIndex].takeCard(deck.dealCard());
 	}
 
+}
+//Animates a text on the panel
+class DisplayWinner extends JPanel {
+	String winner = "";
+
+	/**
+	 * Default constructor
+	 * @param winner the winner 
+	 */
+	DisplayWinner(String winner) {
+		setBackground(Color.BLACK);
+		this.winner=winner;
+	}
+
+	int x = -800;
+	int y = 100;
+
+	/**
+	 * Invoked by Swing to draw components
+	 */
+	public void paint(Graphics g) {
+
+		super.paint(g);
+
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		Font font = new Font("Arial", Font.BOLD, 30);
+		g2.setFont(font);
+		g2.setColor(Color.red);
+		g2.drawString("WINNER IS THE "+winner, x, y);
+		try {
+			Thread.sleep(50);
+		} catch (InterruptedException ex) {
+			Logger.getLogger(DisplayWinner.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		x += 10;
+		if (x > this.getWidth()) {
+			x = -250;
+
+		}
+
+		repaint();
+	}
 }
