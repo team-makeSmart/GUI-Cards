@@ -32,8 +32,6 @@ public class Phase3
    private static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
    private static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
    private static JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];
-   private static JLabel[] playLabelText = new JLabel[NUM_PLAYERS];
-   private static JLabel[] scoreTextLabel = new JLabel[NUM_PLAYERS];
    private static String[] playerNames =
    { "Computer", "You" };
    private static Card[] cardPlayed = new Card[NUM_PLAYERS];
