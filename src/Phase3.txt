@@ -1,4 +1,3 @@
-
 /**
  * @author Hunter Mason, Jake McGhee, Mac Doussias, Pavlos Papadonikolakis
  * CLASS CST 338
@@ -766,7 +765,7 @@ class CardGameFramework
 
    }
 
-   boolean takeCard(int playerIndex)
+   public boolean takeCard(int playerIndex)
    {
       // returns false if either argument is bad
       if (playerIndex < 0 || playerIndex > numPlayers - 1)
@@ -793,7 +792,7 @@ class DisplayWinner extends JPanel
     *           the winner
     * 
     */
-   DisplayWinner(String stringWinner)
+   public DisplayWinner(String stringWinner)
    {
       setBackground(Color.BLACK);
       this.stringWinner = "WINNER IS THE " + stringWinner;
